@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGFE-Fire v4 — Complete 36-Parameter Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2d3250;
+    --text: #e4e6f0;
+    --muted: #8b8fa8;
+    --accent: #6c63ff;
+    --accent2: #00d2ff;
+    --fire: #ff6b35;
+    --veg: #00c853;
+    --climate: #448aff;
+    --terrain: #bb86fc;
+    --socio: #ff9800;
+    --fire-hist: #e91e63;
+    --delta: #26c6da;
+    --interact: #ffd54f;
+    --glow: rgba(108,99,255,0.15);
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, #1a1040 0%, #0f1117 40%, #0d1520 70%, #1a0f0f 100%);
+    padding: 80px 40px 60px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at 30% 50%, rgba(108,99,255,0.08) 0%, transparent 50%),
+                radial-gradient(circle at 70% 50%, rgba(255,107,53,0.06) 0%, transparent 50%);
+    animation: heroGlow 8s ease-in-out infinite alternate;
+  }
+  @keyframes heroGlow {
+    0% { transform: translate(0,0) scale(1); }
+    100% { transform: translate(20px,-10px) scale(1.05); }
+  }
+  .hero h1 {
+    font-size: 3.2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #6c63ff, #00d2ff, #ff6b35);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    position: relative;
+    z-index: 1;
+  }
+  .hero .subtitle {
+    font-size: 1.3rem;
+    color: var(--muted);
+    margin-top: 12px;
+    position: relative;
+    z-index: 1;
+  }
+  .hero .badge-row {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 28px;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 1;
+  }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border: 1px solid;
+  }
+  .badge.gee   { background: rgba(68,138,255,0.12); border-color: rgba(68,138,255,0.3); color: #448aff; }
+  .badge.india { background: rgba(255,152,0,0.12);  border-color: rgba(255,152,0,0.3);  color: #ff9800; }
+  .badge.ml    { background: rgba(108,99,255,0.12); border-color: rgba(108,99,255,0.3); color: #6c63ff; }
+  .badge.data  { background: rgba(0,200,83,0.12);   border-color: rgba(0,200,83,0.3);   color: #00c853; }
+
+  /* ── Container ── */
+  .container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  /* ── Section ── */
+  .section {
+    margin: 60px 0;
+  }
+  .section-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .section-title .icon { font-size: 1.5rem; }
+  .section-desc {
+    color: var(--muted);
+    font-size: 1rem;
+    margin-bottom: 32px;
+    max-width: 900px;
+    line-height: 1.8;
+  }
+
+  /* ── Stats Bar ── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin: 40px 0;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 24px;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .stat-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  }
+  .stat-num {
+    font-size: 2.4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-top: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+  }
+
+  /* ── Data Flow ── */
+  .flow-diagram {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 40px;
+    margin: 30px 0;
+    overflow-x: auto;
+  }
+  .flow-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    flex-wrap: nowrap;
+    min-width: 900px;
+    margin-bottom: 16px;
+  }
+  .flow-box {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 22px;
+    min-width: 200px;
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .flow-box.source { border-color: var(--climate); }
+  .flow-box.process { border-color: var(--accent); }
+  .flow-box.result { border-color: var(--fire); }
+  .flow-box .fb-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+  }
+  .flow-box .fb-detail {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  .flow-arrow {
+    font-size: 1.6rem;
+    color: var(--muted);
+    padding: 0 10px;
+    flex-shrink: 0;
+  }
+
+  /* ── Category Card ── */
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 20px;
+    margin: 24px 0;
+  }
+  .cat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .cat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.25);
+  }
+  .cat-header {
+    padding: 18px 22px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 700;
+    font-size: 1.05rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .cat-count {
+    margin-left: auto;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+  }
+  .cat-body { padding: 0; }
+
+  /* ── Parameter Table ── */
+  .param-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+  }
+  .param-table th {
+    text-align: left;
+    padding: 10px 16px;
+    background: rgba(255,255,255,0.03);
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .param-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+  .param-table tr:last-child td { border-bottom: none; }
+  .param-table tr:hover { background: rgba(108,99,255,0.04); }
+  .param-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    font-size: 0.82rem;
+  }
+  .param-source {
+    font-size: 0.72rem;
+    color: var(--muted);
+    display: inline-block;
+    background: rgba(255,255,255,0.05);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-top: 2px;
+  }
+  .tag {
+    display: inline-block;
+    font-size: 0.68rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tag.kept   { background: rgba(0,200,83,0.15); color: #00c853; }
+  .tag.dropped { background: rgba(255,82,82,0.15); color: #ff5252; }
+  .tag.derived { background: rgba(0,210,255,0.15); color: #00d2ff; }
+
+  /* ── Full Param Master Table ── */
+  .master-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    margin: 24px 0;
+    background: var(--surface);
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .master-table thead th {
+    background: var(--surface2);
+    padding: 14px 16px;
+    text-align: left;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--muted);
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 0;
+  }
+  .master-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    vertical-align: top;
+  }
+  .master-table tr:hover { background: rgba(108,99,255,0.04); }
+  .master-table .mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+  }
+
+  /* ── Index / Satellite Color Dots ── */
+  .dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  .dot.modis { background: #448aff; }
+  .dot.srtm  { background: #bb86fc; }
+  .dot.chirps { background: #26c6da; }
+  .dot.era5  { background: #ff9800; }
+  .dot.firms { background: #e91e63; }
+  .dot.mod   { background: #00c853; }
+  .dot.eng   { background: #ffd54f; }
+  .dot.ghsl  { background: #78909c; }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin: 24px 0;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.82rem;
+    color: var(--muted);
+  }
+
+  /* ── Pipeline Vertical ── */
+  .pipeline {
+    position: relative;
+    padding-left: 40px;
+    margin: 30px 0;
+  }
+  .pipeline::before {
+    content: '';
+    position: absolute;
+    left: 16px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--accent), var(--fire), var(--veg));
+  }
+  .pipe-step {
+    position: relative;
+    margin-bottom: 28px;
+    padding: 18px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+  .pipe-step::before {
+    content: '';
+    position: absolute;
+    left: -32px;
+    top: 22px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 3px solid var(--bg);
+  }
+  .pipe-step .step-num {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+  }
+  .pipe-step .step-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+  .pipe-step .step-detail {
+    font-size: 0.88rem;
+    color: var(--muted);
+    line-height: 1.7;
+  }
+  .pipe-step .step-detail code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    background: rgba(108,99,255,0.1);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--accent2);
+  }
+
+  /* ── Sidebar TOC ── */
+  .toc {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+    z-index: 100;
+    max-height: 80vh;
+    overflow-y: auto;
+  }
+  .toc a {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--muted);
+    text-decoration: none;
+    padding: 4px 0;
+    transition: color 0.2s;
+  }
+  .toc a:hover { color: var(--accent); }
+
+  /* ── Responsive ── */
+  @media (max-width: 900px) {
+    .hero h1 { font-size: 2.2rem; }
+    .cat-grid { grid-template-columns: 1fr; }
+    .toc { display: none; }
+    .container { padding: 0 16px; }
+    .flow-diagram { padding: 20px; }
+  }
+
+  /* ── Highlight box ── */
+  .highlight-box {
+    background: linear-gradient(135deg, rgba(108,99,255,0.08), rgba(255,107,53,0.06));
+    border-left: 4px solid var(--accent);
+    border-radius: 0 12px 12px 0;
+    padding: 20px 24px;
+    margin: 24px 0;
+  }
+  .highlight-box strong { color: var(--accent2); }
+
+  /* ── Summary Box ── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    margin: 24px 0;
+  }
+  .summary-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .summary-item h4 {
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<div class="hero">
+  <h1>🔥 AGFE-Fire v4 — 36-Parameter Deep Dive</h1>
+  <p class="subtitle">Complete guide to every parameter extracted from Google Earth Engine for<br>
+  Western Ghats Forest Fire Vulnerability Prediction (2003–2025)</p>
+  <div class="badge-row">
+    <span class="badge gee">🛰️ Google Earth Engine</span>
+    <span class="badge india">🇮🇳 Western Ghats, India</span>
+    <span class="badge ml">🤖 5 ML Models</span>
+    <span class="badge data">📊 39,249 Samples → 34 Features</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════ TOC ═══════════════════════ -->
+<nav class="toc">
+  <a href="#overview">Overview</a>
+  <a href="#raw-params">36 Raw Parameters</a>
+  <a href="#gee-sources">GEE Data Sources</a>
+  <a href="#categories">Parameter Categories</a>
+  <a href="#screening">VIF Screening</a>
+  <a href="#derived">Derived Features</a>
+  <a href="#final34">Final 34 Features</a>
+  <a href="#pipeline">Full Pipeline</a>
+</nav>
+
+<div class="container">
+
+<!-- ═══════════════════════ OVERVIEW ═══════════════════════ -->
+<div class="section" id="overview">
+  <h2 class="section-title"><span class="icon">📊</span> Overview — Where Does the Data Come From?</h2>
+  <p class="section-desc">
+    All data originates from <strong>Google Earth Engine (GEE)</strong>, a cloud-based geospatial analysis platform.
+    We extracted pixel-level environmental, fire, terrain, and meteorological data for the
+    <strong>Western Ghats biodiversity hotspot</strong> in India across <strong>4 temporal blocks</strong>
+    spanning 22 years. Each sample is a <strong>geographic pixel (~500m resolution)</strong>, not an administrative area.
+  </p>
+
+  <div class="stats-bar">
+    <div class="stat-card">
+      <div class="stat-num">36</div>
+      <div class="stat-label">Raw GEE Parameters</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">39,249</div>
+      <div class="stat-label">Total Samples (4 Blocks)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">29,216</div>
+      <div class="stat-label">After Spatial Thinning</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">34</div>
+      <div class="stat-label">Final Model Features</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-num">22 yrs</div>
+      <div class="stat-label">Temporal Coverage</div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>What is a "parameter" here?</strong> Each parameter is a <em>pixel-level measurement</em> extracted from satellite imagery or derived datasets at a geographic coordinate (latitude, longitude) in the Western Ghats. These are NOT area-level statistics — they are precise remote sensing values at each 500m pixel location. The data is indexed <strong>spatially</strong> (lat/lon) and <strong>temporally</strong> (block period).
+  </div>
+
+  <!-- ── Temporal Blocks ── -->
+  <h3 style="margin-top:32px;margin-bottom:16px;">⏳ 4 Temporal Blocks</h3>
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box source">
+        <div class="fb-title">📦 Block 1</div>
+        <div class="fb-detail">2003–2008<br>10,000 samples<br>🔥 50% fire rate</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box source">
+        <div class="fb-title">📦 Block 2</div>
+        <div class="fb-detail">2009–2014<br>10,000 samples<br>🔥 50% fire rate</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box source">
+        <div class="fb-title">📦 Block 3</div>
+        <div class="fb-detail">2015–2020<br>10,000 samples<br>🔥 50% fire rate</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box result">
+        <div class="fb-title">📦 Block 4 (TEST)</div>
+        <div class="fb-detail">2021–2025<br>9,249 samples<br>🔥 46% fire rate</div>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--muted);font-size:0.85rem;margin-top:12px;">
+      Blocks 1–3 = Training (22,321 after thinning) &nbsp;|&nbsp; Block 4 = Testing (6,895 after thinning)
+    </p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ RAW 36 PARAMETERS ═══════════════════════ -->
+<div class="section" id="raw-params">
+  <h2 class="section-title"><span class="icon">🛰️</span> All 36 Raw Parameters from GEE CSVs</h2>
+  <p class="section-desc">
+    Each CSV exported from GEE has <strong>42 columns</strong>. Of these, 6 are metadata/coordinates
+    (<code>system:index, block, block_role, .geo, latitude, longitude</code>) and 36 are actual
+    parameters. Here is every single one, grouped by what they measure:
+  </p>
+
+  <div class="legend">
+    <div class="legend-item"><span class="dot modis"></span>MODIS Imagery</div>
+    <div class="legend-item"><span class="dot srtm"></span>SRTM Elevation</div>
+    <div class="legend-item"><span class="dot chirps"></span>CHIRPS Rainfall</div>
+    <div class="legend-item"><span class="dot era5"></span>ERA5 Climate</div>
+    <div class="legend-item"><span class="dot firms"></span>FIRMS Fire</div>
+    <div class="legend-item"><span class="dot mod"></span>MODIS Burned Area</div>
+    <div class="legend-item"><span class="dot eng"></span>GEE-Engineered</div>
+    <div class="legend-item"><span class="dot ghsl"></span>GHSL Population</div>
+  </div>
+
+  <table class="master-table">
+    <thead>
+      <tr>
+        <th style="width:30px">#</th>
+        <th>Parameter Name</th>
+        <th>Category</th>
+        <th>GEE Source</th>
+        <th>What It Measures</th>
+        <th>Unit</th>
+        <th>Spatial Basis</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- ── VEGETATION ── -->
+      <tr>
+        <td>1</td>
+        <td class="mono"><span class="dot modis"></span>NDVI_mean</td>
+        <td><span style="color:var(--veg)">🌿 Vegetation</span></td>
+        <td>MODIS MOD13A2 (500m, 16-day)</td>
+        <td>Mean Normalized Difference Vegetation Index over the block period. Measures overall greenness and photosynthetic activity of vegetation.</td>
+        <td>Index [-1, 1]</td>
+        <td>Per-pixel (500m)</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td class="mono"><span class="dot modis"></span>NDVI_max</td>
+        <td><span style="color:var(--veg)">🌿 Vegetation</span></td>
+        <td>MODIS MOD13A2</td>
+        <td>Maximum NDVI during the block period. Peak vegetation greenness — higher values = denser canopy at peak growth.</td>
+        <td>Index [-1, 1]</td>
+        <td>Per-pixel (500m)</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td class="mono"><span class="dot modis"></span>NDVI_min</td>
+        <td><span style="color:var(--veg)">🌿 Vegetation</span></td>
+        <td>MODIS MOD13A2</td>
+        <td>Minimum NDVI during the block period. Driest/least-green state — proxy for fuel dryness during fire season. <strong>Survived VIF screening → FINAL MODEL</strong></td>
+        <td>Index [-1, 1]</td>
+        <td>Per-pixel (500m)</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td class="mono"><span class="dot modis"></span>NDVI_seasonality</td>
+        <td><span style="color:var(--veg)">🌿 Vegetation</span></td>
+        <td>Computed: NDVI_max − NDVI_min</td>
+        <td>Seasonal range of NDVI. High seasonality → deciduous forests that shed leaves in dry season = high fire fuel availability.</td>
+        <td>Index [0, 2]</td>
+        <td>Per-pixel (500m)</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td class="mono"><span class="dot modis"></span>EVI_mean</td>
+        <td><span style="color:var(--veg)">🌿 Vegetation</span></td>
+        <td>MODIS MOD13A2</td>
+        <td>Mean Enhanced Vegetation Index. Similar to NDVI but corrects for atmospheric conditions and soil background. Better for dense canopy.</td>
+        <td>Index [-1, 1]</td>
+        <td>Per-pixel (500m)</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td class="mono"><span class="dot modis"></span>LAI_mean</td>
+        <td><span style="color:var(--veg)">🌿 Vegetation</span></td>
+        <td>MODIS MOD15A2H (500m, 8-day)</td>
+        <td>Mean Leaf Area Index — total leaf surface area per unit ground area. Higher LAI = denser canopy, more organic fuel.</td>
+        <td>m²/m²</td>
+        <td>Per-pixel (500m)</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td class="mono"><span class="dot modis"></span>FPAR_mean</td>
+        <td><span style="color:var(--veg)">🌿 Vegetation</span></td>
+        <td>MODIS MOD15A2H</td>
+        <td>Fraction of Photosynthetically Active Radiation absorbed by vegetation. Indicates how actively plants are photosynthesizing.</td>
+        <td>Fraction [0, 1]</td>
+        <td>Per-pixel (500m)</td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td class="mono"><span class="dot modis"></span>land_cover</td>
+        <td><span style="color:var(--veg)">🌿 Vegetation</span></td>
+        <td>MODIS MCD12Q1 (500m, annual)</td>
+        <td>IGBP land cover classification code. Identifies ecosystem type (evergreen broadleaf forest, grassland, cropland, etc.). <strong>FINAL MODEL</strong></td>
+        <td>Class code [0-17]</td>
+        <td>Per-pixel (500m)</td>
+      </tr>
+
+      <!-- ── FUEL MOISTURE ── -->
+      <tr>
+        <td>9</td>
+        <td class="mono"><span class="dot eng"></span>LFMC_proxy</td>
+        <td><span style="color:#26c6da">💧 Fuel Moisture</span></td>
+        <td>Computed: EVI_mean / (VPD_kPa + 0.01)</td>
+        <td>Live Fuel Moisture Content proxy. Low LFMC = dry, flammable vegetation. Computed from vegetation greenness divided by atmospheric dryness.</td>
+        <td>Ratio</td>
+        <td>Per-pixel (500m)</td>
+      </tr>
+
+      <!-- ── WEATHER ── -->
+      <tr>
+        <td>10</td>
+        <td class="mono"><span class="dot era5"></span>temp_mean_C</td>
+        <td><span style="color:var(--fire)">🌡️ Weather</span></td>
+        <td>ERA5-Land (0.1°, hourly → block avg)</td>
+        <td>Mean air temperature at 2m above ground, averaged over the block period. Higher temps dry out fuel and increase fire risk.</td>
+        <td>°C</td>
+        <td>Per-pixel (~11km, downscaled)</td>
+      </tr>
+      <tr>
+        <td>11</td>
+        <td class="mono"><span class="dot era5"></span>temp_max_C</td>
+        <td><span style="color:var(--fire)">🌡️ Weather</span></td>
+        <td>ERA5-Land</td>
+        <td>Maximum temperature recorded during block period. Extreme heat events drive fire ignition.</td>
+        <td>°C</td>
+        <td>Per-pixel (~11km)</td>
+      </tr>
+      <tr>
+        <td>12</td>
+        <td class="mono"><span class="dot era5"></span>temp_min_C</td>
+        <td><span style="color:var(--fire)">🌡️ Weather</span></td>
+        <td>ERA5-Land</td>
+        <td>Minimum temperature. Low night temps with high day temps = large diurnal range = faster fuel drying.</td>
+        <td>°C</td>
+        <td>Per-pixel (~11km)</td>
+      </tr>
+      <tr>
+        <td>13</td>
+        <td class="mono"><span class="dot chirps"></span>precip_total_mm</td>
+        <td><span style="color:var(--climate)">🌧️ Precipitation</span></td>
+        <td>CHIRPS (0.05°, daily → block sum)</td>
+        <td>Total accumulated precipitation over block period. Low precip = drought conditions = high fire vulnerability. <strong>FINAL MODEL</strong></td>
+        <td>mm</td>
+        <td>Per-pixel (~5.5km)</td>
+      </tr>
+      <tr>
+        <td>14</td>
+        <td class="mono"><span class="dot chirps"></span>precip_mean_mm</td>
+        <td><span style="color:var(--climate)">🌧️ Precipitation</span></td>
+        <td>CHIRPS</td>
+        <td>Mean daily precipitation. Strongly correlated with precip_total_mm (ρ=1.0), hence removed by correlation filter.</td>
+        <td>mm/day</td>
+        <td>Per-pixel (~5.5km)</td>
+      </tr>
+      <tr>
+        <td>15</td>
+        <td class="mono"><span class="dot era5"></span>relative_humidity_pct</td>
+        <td><span style="color:var(--climate)">🌧️ Moisture</span></td>
+        <td>ERA5-Land</td>
+        <td>Mean relative humidity at 2m. Low humidity = fast evaporation = dry fuel = higher fire spread rate.</td>
+        <td>%</td>
+        <td>Per-pixel (~11km)</td>
+      </tr>
+      <tr>
+        <td>16</td>
+        <td class="mono"><span class="dot era5"></span>VPD_kPa</td>
+        <td><span style="color:var(--climate)">🌧️ Moisture</span></td>
+        <td>ERA5-Land (computed)</td>
+        <td>Vapor Pressure Deficit — the "drying power" of the atmosphere. High VPD = atmosphere pulls moisture from vegetation = wildfire risk.</td>
+        <td>kPa</td>
+        <td>Per-pixel (~11km)</td>
+      </tr>
+      <tr>
+        <td>17</td>
+        <td class="mono"><span class="dot eng"></span>dry_months_count</td>
+        <td><span style="color:var(--climate)">🌧️ Drought</span></td>
+        <td>Computed: months with precip < 60mm</td>
+        <td>Number of dry months (precipitation below 60mm threshold) in the block period. More dry months = longer fire season.</td>
+        <td>Count [0-72]</td>
+        <td>Per-pixel (~5.5km)</td>
+      </tr>
+      <tr>
+        <td>18</td>
+        <td class="mono"><span class="dot era5"></span>wind_speed_ms</td>
+        <td><span style="color:var(--climate)">💨 Wind</span></td>
+        <td>ERA5-Land (10m wind)</td>
+        <td>Mean wind speed at 10m. Wind fans flames and carries embers, increasing fire spread rate.</td>
+        <td>m/s</td>
+        <td>Per-pixel (~11km)</td>
+      </tr>
+      <tr>
+        <td>19</td>
+        <td class="mono"><span class="dot era5"></span>wind_direction_deg</td>
+        <td><span style="color:var(--climate)">💨 Wind</span></td>
+        <td>ERA5-Land</td>
+        <td>Mean wind direction. Determines fire spread direction relative to terrain slope and vegetation corridors.</td>
+        <td>Degrees [0-360]</td>
+        <td>Per-pixel (~11km)</td>
+      </tr>
+
+      <!-- ── FIRE WEATHER ── -->
+      <tr>
+        <td>20</td>
+        <td class="mono"><span class="dot eng"></span>FWI_proxy</td>
+        <td><span style="color:#ff5252">🔥 Fire Weather</span></td>
+        <td>Computed: temp_max_C × VPD_kPa / (precip_mean_mm + 1)</td>
+        <td>Fire Weather Index proxy. Combines heat, atmospheric dryness, and rainfall into a single fire danger score. <strong>FINAL MODEL</strong></td>
+        <td>Composite index</td>
+        <td>Per-pixel</td>
+      </tr>
+
+      <!-- ── TERRAIN ── -->
+      <tr>
+        <td>21</td>
+        <td class="mono"><span class="dot srtm"></span>elevation</td>
+        <td><span style="color:var(--terrain)">⛰️ Terrain</span></td>
+        <td>SRTM DEM (30m, resampled)</td>
+        <td>Elevation above sea level. Higher elevations in Western Ghats have different forest types and fire regimes. <strong>FINAL MODEL</strong></td>
+        <td>meters</td>
+        <td>Per-pixel (30m)</td>
+      </tr>
+      <tr>
+        <td>22</td>
+        <td class="mono"><span class="dot srtm"></span>slope_deg</td>
+        <td><span style="color:var(--terrain)">⛰️ Terrain</span></td>
+        <td>SRTM DEM (derived)</td>
+        <td>Terrain slope in degrees. Steeper slopes = faster uphill fire spread due to pre-heating of upslope fuel.</td>
+        <td>Degrees</td>
+        <td>Per-pixel (30m)</td>
+      </tr>
+      <tr>
+        <td>23</td>
+        <td class="mono"><span class="dot srtm"></span>aspect_deg</td>
+        <td><span style="color:var(--terrain)">⛰️ Terrain</span></td>
+        <td>SRTM DEM (derived)</td>
+        <td>Slope facing direction. South/SW-facing slopes in India receive more solar radiation = drier fuel. <strong>FINAL MODEL</strong></td>
+        <td>Degrees [0-360]</td>
+        <td>Per-pixel (30m)</td>
+      </tr>
+      <tr>
+        <td>24</td>
+        <td class="mono"><span class="dot srtm"></span>TWI</td>
+        <td><span style="color:var(--terrain)">⛰️ Terrain</span></td>
+        <td>SRTM DEM (derived: ln(a / tan β))</td>
+        <td>Topographic Wetness Index. Low TWI = dry ridges (fire-prone). High TWI = wet valleys (fire-resistant).</td>
+        <td>Index</td>
+        <td>Per-pixel (30m)</td>
+      </tr>
+
+      <!-- ── POPULATION ── -->
+      <tr>
+        <td>25</td>
+        <td class="mono"><span class="dot ghsl"></span>population_density</td>
+        <td><span style="color:var(--socio)">👥 Socio-Economic</span></td>
+        <td>GHSL-POP / WorldPop (1km)</td>
+        <td>Human population density. More people = more accidental ignition (slash-and-burn, campfires, arson). <strong>FINAL MODEL</strong></td>
+        <td>persons/km²</td>
+        <td>Per-pixel (1km)</td>
+      </tr>
+
+      <!-- ── FIRE PARAMETERS (Current Block — used as TARGET / excluded from features) ── -->
+      <tr style="background:rgba(255,82,82,0.04)">
+        <td>26</td>
+        <td class="mono"><span class="dot firms"></span>fire_occurrence</td>
+        <td><span style="color:#ff5252">🎯 TARGET</span></td>
+        <td>MODIS FIRMS + MCD64A1</td>
+        <td>Binary: did fire occur at this pixel during the block? <strong>THIS IS THE PREDICTION TARGET (y). NOT a feature.</strong></td>
+        <td>Binary [0, 1]</td>
+        <td>Per-pixel (1km)</td>
+      </tr>
+      <tr style="background:rgba(255,82,82,0.04)">
+        <td>27</td>
+        <td class="mono"><span class="dot firms"></span>total_fire_count</td>
+        <td><span style="color:#ff5252">🚫 Fire (excluded)</span></td>
+        <td>MODIS FIRMS active fire</td>
+        <td>Total number of fire detections at this pixel across the block period. Excluded from features (leakage).</td>
+        <td>Count</td>
+        <td>Per-pixel (1km)</td>
+      </tr>
+      <tr style="background:rgba(255,82,82,0.04)">
+        <td>28</td>
+        <td class="mono"><span class="dot firms"></span>FRP_mean_MW</td>
+        <td><span style="color:#ff5252">🚫 Fire (excluded)</span></td>
+        <td>MODIS FIRMS</td>
+        <td>Mean Fire Radiative Power — intensity of fire in megawatts. Higher FRP = more intense blaze. Excluded (leakage).</td>
+        <td>Megawatts</td>
+        <td>Per-pixel (1km)</td>
+      </tr>
+      <tr style="background:rgba(255,82,82,0.04)">
+        <td>29</td>
+        <td class="mono"><span class="dot firms"></span>FRP_max_MW</td>
+        <td><span style="color:#ff5252">🚫 Fire (excluded)</span></td>
+        <td>MODIS FIRMS</td>
+        <td>Maximum FRP — peak fire intensity at this pixel. Excluded (leakage).</td>
+        <td>Megawatts</td>
+        <td>Per-pixel (1km)</td>
+      </tr>
+      <tr style="background:rgba(255,82,82,0.04)">
+        <td>30</td>
+        <td class="mono"><span class="dot mod"></span>burned_area_binary</td>
+        <td><span style="color:#ff5252">🚫 Fire (excluded)</span></td>
+        <td>MODIS MCD64A1 Burned Area</td>
+        <td>Binary: was this pixel mapped as burned? Excluded (leakage).</td>
+        <td>Binary [0, 1]</td>
+        <td>Per-pixel (500m)</td>
+      </tr>
+      <tr style="background:rgba(255,82,82,0.04)">
+        <td>31</td>
+        <td class="mono"><span class="dot mod"></span>burn_month_count</td>
+        <td><span style="color:#ff5252">🚫 Fire (excluded)</span></td>
+        <td>MODIS MCD64A1</td>
+        <td>Number of months with mapped burned area at this pixel. Excluded (leakage).</td>
+        <td>Count [0-72]</td>
+        <td>Per-pixel (500m)</td>
+      </tr>
+      <tr style="background:rgba(255,82,82,0.04)">
+        <td>32</td>
+        <td class="mono"><span class="dot firms"></span>FIRMS_brightness_K</td>
+        <td><span style="color:#ff5252">🚫 Fire (excluded)</span></td>
+        <td>MODIS FIRMS</td>
+        <td>Brightness temperature of fire pixel in Kelvin — proxy for fire intensity. Excluded (leakage).</td>
+        <td>Kelvin</td>
+        <td>Per-pixel (1km)</td>
+      </tr>
+      <tr style="background:rgba(255,82,82,0.04)">
+        <td>33</td>
+        <td class="mono"><span class="dot firms"></span>FIRMS_confidence</td>
+        <td><span style="color:#ff5252">🚫 Fire (excluded)</span></td>
+        <td>MODIS FIRMS</td>
+        <td>Confidence level of fire detection [0-100%]. Excluded (leakage).</td>
+        <td>%</td>
+        <td>Per-pixel (1km)</td>
+      </tr>
+
+      <!-- ── GEE PRE-ENGINEERED ── -->
+      <tr>
+        <td>34</td>
+        <td class="mono"><span class="dot eng"></span>climate_x_fuel</td>
+        <td><span style="color:var(--interact)">✖️ Interaction</span></td>
+        <td>GEE: temp_mean_C × NDVI_seasonality</td>
+        <td>Climate-fuel interaction — hot temperatures combined with high vegetation seasonality = extreme fire risk zones.</td>
+        <td>Composite</td>
+        <td>Per-pixel</td>
+      </tr>
+      <tr>
+        <td>35</td>
+        <td class="mono"><span class="dot eng"></span>dryness_x_fuel</td>
+        <td><span style="color:var(--interact)">✖️ Interaction</span></td>
+        <td>GEE: VPD_kPa × NDVI_seasonality</td>
+        <td>Atmospheric dryness combined with vegetation variability. High values = dry air + deciduous forests = highly flammable conditions.</td>
+        <td>Composite</td>
+        <td>Per-pixel</td>
+      </tr>
+      <tr>
+        <td>36</td>
+        <td class="mono"><span class="dot eng"></span>terrain_x_veg</td>
+        <td><span style="color:var(--interact)">✖️ Interaction</span></td>
+        <td>GEE: slope_deg × NDVI_min</td>
+        <td>Terrain-vegetation interaction — steep slopes with low minimum NDVI = fire-prone ridgelines. <strong>FINAL MODEL</strong></td>
+        <td>Composite</td>
+        <td>Per-pixel</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════ GEE SOURCES ═══════════════════════ -->
+<div class="section" id="gee-sources">
+  <h2 class="section-title"><span class="icon">🛰️</span> Google Earth Engine Data Sources</h2>
+  <p class="section-desc">
+    Every parameter comes from a specific satellite sensor or derived dataset, accessed through GEE's petabyte-scale catalog.
+    Here are the 7 primary data sources:
+  </p>
+
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="cat-header" style="color:var(--climate)">
+        <span>🛰️ MODIS (Terra/Aqua)</span>
+        <span class="cat-count">17 params</span>
+      </div>
+      <div class="cat-body" style="padding:16px;">
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.7;">
+          <strong>Satellite:</strong> NASA's Terra (1999–) & Aqua (2002–) satellites<br>
+          <strong>Resolution:</strong> 250m–1km, daily revisit<br>
+          <strong>Products used:</strong><br>
+          • <code>MOD13A2</code> — NDVI, EVI (500m, 16-day composites)<br>
+          • <code>MOD15A2H</code> — LAI, FPAR (500m, 8-day)<br>
+          • <code>MCD12Q1</code> — Land Cover (500m, annual)<br>
+          • <code>MCD64A1</code> — Burned Area (500m, monthly)<br>
+          <strong>Covers:</strong> Vegetation indices, leaf area, land type, burned area mapping
+        </p>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header" style="color:var(--fire-hist)">
+        <span>🔥 MODIS FIRMS</span>
+        <span class="cat-count">5 params</span>
+      </div>
+      <div class="cat-body" style="padding:16px;">
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.7;">
+          <strong>System:</strong> Fire Information for Resource Management System<br>
+          <strong>Resolution:</strong> 1km, 4× daily<br>
+          <strong>Detection:</strong> Thermal anomaly detection in MODIS bands 21/22 & 31<br>
+          <strong>Products:</strong><br>
+          • Active fire detections (FRP, brightness temperature)<br>
+          • Fire confidence level<br>
+          • Fire occurrence binary flag<br>
+          <strong>Covers:</strong> fire_occurrence (TARGET), FRP_mean/max, FIRMS_brightness, FIRMS_confidence, total_fire_count
+        </p>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header" style="color:var(--terrain)">
+        <span>⛰️ SRTM DEM</span>
+        <span class="cat-count">4 params</span>
+      </div>
+      <div class="cat-body" style="padding:16px;">
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.7;">
+          <strong>Mission:</strong> Shuttle Radar Topography Mission (2000)<br>
+          <strong>Resolution:</strong> 30m (1 arc-second)<br>
+          <strong>Coverage:</strong> 60°N to 56°S<br>
+          <strong>Products:</strong><br>
+          • <code>elevation</code> — raw DEM value<br>
+          • <code>slope_deg</code> — computed via ee.Terrain.slope()<br>
+          • <code>aspect_deg</code> — computed via ee.Terrain.aspect()<br>
+          • <code>TWI</code> — Topographic Wetness Index = ln(a/tan β)<br>
+          <strong>Note:</strong> Static — same value across all 4 blocks
+        </p>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header" style="color:var(--delta)">
+        <span>🌧️ CHIRPS</span>
+        <span class="cat-count">3 params</span>
+      </div>
+      <div class="cat-body" style="padding:16px;">
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.7;">
+          <strong>Dataset:</strong> Climate Hazards Group InfraRed Precipitation with Station data<br>
+          <strong>Resolution:</strong> 0.05° (~5.5km), daily<br>
+          <strong>Period:</strong> 1981–present<br>
+          <strong>Products:</strong><br>
+          • <code>precip_total_mm</code> — sum over block period<br>
+          • <code>precip_mean_mm</code> — daily average<br>
+          • <code>dry_months_count</code> — months with <60mm<br>
+          <strong>Key:</strong> Western Ghats gets 2000–5000mm/yr, but fire season (Jan–May) is very dry
+        </p>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header" style="color:var(--socio)">
+        <span>🌍 ERA5-Land Reanalysis</span>
+        <span class="cat-count">6 params</span>
+      </div>
+      <div class="cat-body" style="padding:16px;">
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.7;">
+          <strong>Dataset:</strong> ECMWF ERA5-Land global reanalysis<br>
+          <strong>Resolution:</strong> 0.1° (~11km), hourly<br>
+          <strong>Period:</strong> 1950–present<br>
+          <strong>Products:</strong><br>
+          • <code>temp_mean/max/min_C</code> — 2m air temperature<br>
+          • <code>relative_humidity_pct</code> — 2m relative humidity<br>
+          • <code>VPD_kPa</code> — Vapor Pressure Deficit<br>
+          • <code>wind_speed_ms</code>, <code>wind_direction_deg</code> — 10m wind<br>
+          <strong>Note:</strong> Reanalysis = satellite + ground stations + physics models combined
+        </p>
+      </div>
+    </div>
+
+    <div class="cat-card">
+      <div class="cat-header" style="color:#78909c">
+        <span>👥 GHSL / WorldPop</span>
+        <span class="cat-count">1 param</span>
+      </div>
+      <div class="cat-body" style="padding:16px;">
+        <p style="font-size:0.85rem;color:var(--muted);line-height:1.7;">
+          <strong>Dataset:</strong> Global Human Settlement Layer / WorldPop<br>
+          <strong>Resolution:</strong> 1km<br>
+          <strong>Product:</strong><br>
+          • <code>population_density</code> — persons/km²<br>
+          <strong>Why:</strong> 90%+ of Indian forest fires are human-caused (slash-and-burn agriculture, NTFP collection, accidental)
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ CATEGORIES ═══════════════════════ -->
+<div class="section" id="categories">
+  <h2 class="section-title"><span class="icon">📂</span> Parameter Categories Breakdown</h2>
+  <p class="section-desc">
+    The 36 raw parameters fall into 8 functional categories. Each category captures a different
+    aspect of fire vulnerability:
+  </p>
+
+  <div class="summary-grid">
+    <div class="summary-item">
+      <h4><span style="color:var(--veg)">🌿</span> Vegetation (8 params)</h4>
+      <p style="font-size:0.85rem;color:var(--muted);">
+        <strong>What:</strong> Greenness, canopy density, land type<br>
+        <strong>Why for fire:</strong> Vegetation = fuel. Dry, deciduous forests with low NDVI_min are tinderboxes.<br>
+        <strong>Params:</strong> NDVI_mean/max/min/seasonality, EVI_mean, LAI_mean, FPAR_mean, land_cover
+      </p>
+    </div>
+    <div class="summary-item">
+      <h4><span style="color:var(--fire)">🌡️</span> Temperature (3 params)</h4>
+      <p style="font-size:0.85rem;color:var(--muted);">
+        <strong>What:</strong> Air temperature statistics<br>
+        <strong>Why for fire:</strong> Hot temps accelerate fuel drying and bring fuel closer to ignition point.<br>
+        <strong>Params:</strong> temp_mean_C, temp_max_C, temp_min_C
+      </p>
+    </div>
+    <div class="summary-item">
+      <h4><span style="color:var(--climate)">🌧️</span> Precipitation & Moisture (5 params)</h4>
+      <p style="font-size:0.85rem;color:var(--muted);">
+        <strong>What:</strong> Rainfall, humidity, atmospheric dryness, drought duration<br>
+        <strong>Why for fire:</strong> Drought is the #1 fire precondition. Low precip + high VPD = extreme fire danger.<br>
+        <strong>Params:</strong> precip_total/mean_mm, relative_humidity_pct, VPD_kPa, dry_months_count
+      </p>
+    </div>
+    <div class="summary-item">
+      <h4><span style="color:var(--delta)">💨</span> Wind (2 params)</h4>
+      <p style="font-size:0.85rem;color:var(--muted);">
+        <strong>What:</strong> Wind speed and direction<br>
+        <strong>Why for fire:</strong> Wind fans flames, carries embers (spotting), and determines fire spread direction.<br>
+        <strong>Params:</strong> wind_speed_ms, wind_direction_deg
+      </p>
+    </div>
+    <div class="summary-item">
+      <h4><span style="color:var(--terrain)">⛰️</span> Terrain (4 params)</h4>
+      <p style="font-size:0.85rem;color:var(--muted);">
+        <strong>What:</strong> Topography from SRTM radar<br>
+        <strong>Why for fire:</strong> Fire moves faster uphill. South-facing slopes are drier. Ridges (low TWI) dry out first.<br>
+        <strong>Params:</strong> elevation, slope_deg, aspect_deg, TWI
+      </p>
+    </div>
+    <div class="summary-item">
+      <h4><span style="color:var(--socio)">👥</span> Socio-Economic (1 param)</h4>
+      <p style="font-size:0.85rem;color:var(--muted);">
+        <strong>What:</strong> Human presence<br>
+        <strong>Why for fire:</strong> Most Indian forest fires are anthropogenic — more people = more ignition sources.<br>
+        <strong>Params:</strong> population_density
+      </p>
+    </div>
+    <div class="summary-item">
+      <h4><span style="color:#ff5252">🔥</span> Fire Parameters (8 params)</h4>
+      <p style="font-size:0.85rem;color:var(--muted);">
+        <strong>What:</strong> Active fire detections and burned area<br>
+        <strong>Role:</strong> 1 is the TARGET (fire_occurrence). The other 7 are EXCLUDED from features (would be leakage — you can't use current fire data to predict current fire).<br>
+        <strong>Params:</strong> fire_occurrence⭐, total_fire_count, FRP_mean/max_MW, burned_area_binary, burn_month_count, FIRMS_brightness_K, FIRMS_confidence
+      </p>
+    </div>
+    <div class="summary-item">
+      <h4><span style="color:var(--interact)">✖️</span> GEE Pre-Engineered (5 params)</h4>
+      <p style="font-size:0.85rem;color:var(--muted);">
+        <strong>What:</strong> Composite/interaction features computed in GEE<br>
+        <strong>Why:</strong> Capture non-linear relationships between variables.<br>
+        <strong>Params:</strong> LFMC_proxy, FWI_proxy, climate_x_fuel, dryness_x_fuel, terrain_x_veg
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ VIF SCREENING ═══════════════════════ -->
+<div class="section" id="screening">
+  <h2 class="section-title"><span class="icon">🔬</span> VIF Screening — From 28 Environmental to 8 Survivors</h2>
+  <p class="section-desc">
+    Before modelling, we removed highly correlated and redundant parameters through a 2-pass process.
+    This is essential because multicollinear features cause unstable model coefficients and inflated importance scores.
+  </p>
+
+  <div class="flow-diagram">
+    <div class="flow-row">
+      <div class="flow-box source">
+        <div class="fb-title">28 Environmental</div>
+        <div class="fb-detail">All non-fire, non-meta columns</div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box process">
+        <div class="fb-title">Pass 1: Correlation Filter</div>
+        <div class="fb-detail">Remove pairs with |ρ| > 0.75<br>Keep the one more correlated with target<br><strong>−14 features</strong></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box process">
+        <div class="fb-title">Pass 2: VIF Screening</div>
+        <div class="fb-detail">Iteratively remove VIF > 10<br>Until all VIF ≤ 10<br><strong>−6 features</strong></div>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-box result">
+        <div class="fb-title">8 Survivors ✅</div>
+        <div class="fb-detail">Independent, non-redundant<br>environmental predictors</div>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="margin:24px 0 16px;">❌ Removed by Correlation Filter (14 features)</h3>
+  <table class="master-table">
+    <thead>
+      <tr><th>Removed Feature</th><th>Correlated With</th><th>|ρ| Value</th><th>Why Removed</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">EVI_mean</td><td>NDVI_min</td><td>0.877</td><td>NDVI_min more correlated with fire target</td></tr>
+      <tr><td class="mono">LAI_mean</td><td>FPAR_mean</td><td>0.954</td><td>Nearly identical measures of canopy density</td></tr>
+      <tr><td class="mono">LFMC_proxy</td><td>EVI/NDVI</td><td>0.898</td><td>Derived from EVI which is already represented</td></tr>
+      <tr><td class="mono">NDVI_mean</td><td>NDVI_min/max</td><td>0.916</td><td>NDVI_min captures drought signal better</td></tr>
+      <tr><td class="mono">climate_x_fuel</td><td>VPD × NDVI_seas</td><td>0.878</td><td>Redundant with component features</td></tr>
+      <tr><td class="mono">dry_months_count</td><td>precip_total_mm</td><td>0.872</td><td>Both measure drought; precip_total more informative</td></tr>
+      <tr><td class="mono">dryness_x_fuel</td><td>VPD × components</td><td>0.858</td><td>Redundant with VPD and NDVI components</td></tr>
+      <tr><td class="mono">precip_mean_mm</td><td>precip_total_mm</td><td>1.000</td><td>Perfectly correlated (total = mean × days)</td></tr>
+      <tr><td class="mono">VPD_kPa</td><td>temp/humidity</td><td>0.949</td><td>VPD derived from temp and humidity</td></tr>
+      <tr><td class="mono">temp_max_C</td><td>temp_mean_C</td><td>0.790</td><td>Temperatures highly correlated in WG</td></tr>
+      <tr><td class="mono">temp_mean_C</td><td>temp_min_C</td><td>0.881</td><td>All 3 temps redundant; all removed by filters</td></tr>
+      <tr><td class="mono">temp_min_C</td><td>temp_mean_C</td><td>0.811</td><td>Temperature cluster — indirect info via FWI_proxy</td></tr>
+      <tr><td class="mono">slope_deg</td><td>TWI/elevation</td><td>0.959</td><td>Slope captured indirectly by terrain_x_veg</td></tr>
+      <tr><td class="mono">wind_speed_ms</td><td>other climate</td><td>0.804</td><td>Moderately redundant with climate cluster</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="margin:24px 0 16px;">❌ Removed by VIF (6 features)</h3>
+  <table class="master-table">
+    <thead>
+      <tr><th>Removed Feature</th><th>VIF Value</th><th>Why Problematic</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">NDVI_max</td><td>323.8</td><td>Extreme multicollinearity with other NDVI vars</td></tr>
+      <tr><td class="mono">relative_humidity_pct</td><td>292.4</td><td>Redundant with precip + temperature info</td></tr>
+      <tr><td class="mono">wind_direction_deg</td><td>100.7</td><td>Circular variable, hard to model linearly</td></tr>
+      <tr><td class="mono">NDVI_seasonality</td><td>39.9</td><td>Computed from max − min; both remaining removed it</td></tr>
+      <tr><td class="mono">FPAR_mean</td><td>21.9</td><td>Redundant with remaining vegetation indices</td></tr>
+      <tr><td class="mono">TWI</td><td>13.2</td><td>Captured by elevation + slope information</td></tr>
+    </tbody>
+  </table>
+
+  <div class="highlight-box" style="margin-top:24px;">
+    <strong>✅ 8 Environmental Survivors:</strong> FWI_proxy, NDVI_min, aspect_deg, elevation, land_cover, population_density, precip_total_mm, terrain_x_veg — Each captures a <em>unique, independent</em> dimension of fire vulnerability.
+  </div>
+</div>
+
+<!-- ═══════════════════════ DERIVED FEATURES ═══════════════════════ -->
+<div class="section" id="derived">
+  <h2 class="section-title"><span class="icon">🔧</span> Derived Features — Engineered in the Notebook</h2>
+  <p class="section-desc">
+    Beyond the 8 VIF-surviving environmental features, the notebook engineers 26 additional features
+    from the raw data using temporal, spatial, and domain knowledge:
+  </p>
+
+  <div class="cat-grid">
+    <!-- Fire History -->
+    <div class="cat-card">
+      <div class="cat-header" style="color:var(--fire-hist)">
+        <span>🔥 Prior-Block Fire History</span>
+        <span class="cat-count">10 features</span>
+      </div>
+      <div class="cat-body">
+        <table class="param-table">
+          <tr>
+            <td><span class="param-name">prev_fire_occurrence</span><br><span class="param-source">Block k-1 → Block k</span></td>
+            <td>Did fire occur at this pixel in the previous block?</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">prev_total_fire_count</span><br><span class="param-source">Block k-1 → Block k</span></td>
+            <td>How many fires were detected in previous block?</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">prev_FRP_mean_MW</span><br><span class="param-source">Block k-1 → Block k</span></td>
+            <td>Average fire intensity in previous block</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">prev_FRP_max_MW</span><br><span class="param-source">Block k-1 → Block k</span></td>
+            <td>Peak fire intensity in previous block</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">prev_burned_area_binary</span><br><span class="param-source">Block k-1 → Block k</span></td>
+            <td>Was this pixel burned in previous block?</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">prev_burn_month_count</span><br><span class="param-source">Block k-1 → Block k</span></td>
+            <td>How many months was it burning in previous block?</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">prev_FIRMS_brightness_K</span><br><span class="param-source">Block k-1 → Block k</span></td>
+            <td>Brightness temperature of previous block's fires</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">fire_recurrence</span><br><span class="param-source">All blocks < k</span></td>
+            <td>How many prior blocks had fire at this pixel (0–3)</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">fire_trend_delta</span><br><span class="param-source">Block k-1 − Block k-2</span></td>
+            <td>Change in fire count between the two most recent prior blocks</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">neighbor_fire_5km</span><br><span class="param-source">5km radius, Block k-1</span></td>
+            <td>Average fire occurrence within 5km in previous block (spatial contagion)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Temporal Deltas -->
+    <div class="cat-card">
+      <div class="cat-header" style="color:var(--delta)">
+        <span>📈 Temporal Deltas</span>
+        <span class="cat-count">8 features</span>
+      </div>
+      <div class="cat-body">
+        <table class="param-table">
+          <tr>
+            <td><span class="param-name">delta_FWI_proxy</span></td>
+            <td>Change in fire weather index from Block k-1 → k</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">delta_NDVI_min</span></td>
+            <td>Change in minimum greenness (drying trend?)</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">delta_aspect_deg</span></td>
+            <td>Should be ~0 (terrain is static)</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">delta_elevation</span></td>
+            <td>Should be ~0 (terrain is static)</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">delta_land_cover</span></td>
+            <td>Land use change between blocks</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">delta_population_density</span></td>
+            <td>Population growth between blocks</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">delta_precip_total_mm</span></td>
+            <td>Rainfall change (−721mm for Block 4 = drying!)</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">delta_terrain_x_veg</span></td>
+            <td>Change in terrain-vegetation interaction</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Climate Indices -->
+    <div class="cat-card">
+      <div class="cat-header" style="color:var(--climate)">
+        <span>🌊 Climate Indices</span>
+        <span class="cat-count">2 features</span>
+      </div>
+      <div class="cat-body">
+        <table class="param-table">
+          <tr>
+            <td><span class="param-name">ONI_index</span><br><span class="param-source">NOAA block averages</span></td>
+            <td>Oceanic Niño Index — El Niño/La Niña phase. Positive = El Niño (drought in India). Block 4: −0.45 (La Niña)</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">IOD_index</span><br><span class="param-source">NOAA block averages</span></td>
+            <td>Indian Ocean Dipole. Positive IOD = reduced Indian monsoon. Block 4: −0.10</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Interaction Terms -->
+    <div class="cat-card">
+      <div class="cat-header" style="color:var(--interact)">
+        <span>✖️ Notebook Interactions</span>
+        <span class="cat-count">5 features</span>
+      </div>
+      <div class="cat-body">
+        <table class="param-table">
+          <tr>
+            <td><span class="param-name">fwi_x_ndvi</span></td>
+            <td>FWI_proxy × NDVI_min — fire danger in dry vegetation</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">prev_frp_x_fwi</span></td>
+            <td>prev_FRP_mean_MW × FWI_proxy — historical fire + current danger</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">elev_x_ndvi</span></td>
+            <td>elevation × NDVI_min — altitude-vegetation interaction</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">oni_x_precip</span></td>
+            <td>ONI_index × precip_total_mm — ENSO-rainfall coupling</td>
+          </tr>
+          <tr>
+            <td><span class="param-name">neighbor_fire_x_fwi</span></td>
+            <td>neighbor_fire_5km × FWI_proxy — spatial fire spread risk</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+
+    <!-- Seasonal -->
+    <div class="cat-card">
+      <div class="cat-header" style="color:#78909c">
+        <span>📅 Seasonal</span>
+        <span class="cat-count">1 feature</span>
+      </div>
+      <div class="cat-body">
+        <table class="param-table">
+          <tr>
+            <td><span class="param-name">fire_season</span></td>
+            <td>Always = 1 (all data is from fire season: January–May)</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ FINAL 34 ═══════════════════════ -->
+<div class="section" id="final34">
+  <h2 class="section-title"><span class="icon">🎯</span> Final 34 Model Features — Complete Inventory</h2>
+  <p class="section-desc">
+    After VIF screening (28→8 environmental), plus 10 fire history + 8 temporal deltas + 2 climate indices + 5 interactions + 1 seasonal = <strong>34 total features</strong> fed into the 5 ML models.
+  </p>
+
+  <table class="master-table">
+    <thead>
+      <tr>
+        <th style="width:30px">#</th>
+        <th>Feature Name</th>
+        <th>Group</th>
+        <th>Origin</th>
+        <th>Physical Meaning</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Environmental -->
+      <tr><td>1</td><td class="mono" style="color:var(--veg)">FWI_proxy</td><td>🌍 Environmental</td><td>GEE-computed</td><td>Fire Weather Index composite (heat × dryness / rain)</td></tr>
+      <tr><td>2</td><td class="mono" style="color:var(--veg)">NDVI_min</td><td>🌍 Environmental</td><td>MODIS MOD13A2</td><td>Driest vegetation state — proxy for fuel dryness</td></tr>
+      <tr><td>3</td><td class="mono" style="color:var(--veg)">aspect_deg</td><td>🌍 Environmental</td><td>SRTM DEM</td><td>Slope facing direction (S/SW = sunnier = drier)</td></tr>
+      <tr><td>4</td><td class="mono" style="color:var(--veg)">elevation</td><td>🌍 Environmental</td><td>SRTM DEM</td><td>Altitude above sea level (metres)</td></tr>
+      <tr><td>5</td><td class="mono" style="color:var(--veg)">land_cover</td><td>🌍 Environmental</td><td>MODIS MCD12Q1</td><td>IGBP ecosystem type code</td></tr>
+      <tr><td>6</td><td class="mono" style="color:var(--veg)">population_density</td><td>🌍 Environmental</td><td>GHSL/WorldPop</td><td>Human presence (ignition source density)</td></tr>
+      <tr><td>7</td><td class="mono" style="color:var(--veg)">precip_total_mm</td><td>🌍 Environmental</td><td>CHIRPS</td><td>Total rainfall over block period</td></tr>
+      <tr><td>8</td><td class="mono" style="color:var(--veg)">terrain_x_veg</td><td>🌍 Environmental</td><td>GEE: slope × NDVI_min</td><td>Steep-dry-vegetation interaction</td></tr>
+      <!-- Fire History -->
+      <tr><td>9</td><td class="mono" style="color:var(--fire-hist)">prev_fire_occurrence</td><td>🔥 Fire History</td><td>Block k-1</td><td>Binary: fire in previous block at this pixel</td></tr>
+      <tr><td>10</td><td class="mono" style="color:var(--fire-hist)">prev_total_fire_count</td><td>🔥 Fire History</td><td>Block k-1</td><td>Fire detection count from previous block</td></tr>
+      <tr><td>11</td><td class="mono" style="color:var(--fire-hist)">prev_FRP_mean_MW</td><td>🔥 Fire History</td><td>Block k-1</td><td>Average fire intensity from previous block</td></tr>
+      <tr><td>12</td><td class="mono" style="color:var(--fire-hist)">prev_FRP_max_MW</td><td>🔥 Fire History</td><td>Block k-1</td><td>Peak fire intensity from previous block</td></tr>
+      <tr><td>13</td><td class="mono" style="color:var(--fire-hist)">prev_burned_area_binary</td><td>🔥 Fire History</td><td>Block k-1</td><td>Was pixel burned in previous block?</td></tr>
+      <tr><td>14</td><td class="mono" style="color:var(--fire-hist)">prev_burn_month_count</td><td>🔥 Fire History</td><td>Block k-1</td><td>Duration of burning in previous block</td></tr>
+      <tr><td>15</td><td class="mono" style="color:var(--fire-hist)">prev_FIRMS_brightness_K</td><td>🔥 Fire History</td><td>Block k-1</td><td>Fire brightness temperature from previous block</td></tr>
+      <tr><td>16</td><td class="mono" style="color:var(--fire-hist)">fire_recurrence</td><td>🔥 Fire History</td><td>All blocks &lt; k</td><td>Count of prior blocks with fire (0–3)</td></tr>
+      <tr><td>17</td><td class="mono" style="color:var(--fire-hist)">fire_trend_delta</td><td>🔥 Fire History</td><td>Block k-1 − k-2</td><td>Is fire activity increasing or decreasing?</td></tr>
+      <tr><td>18</td><td class="mono" style="color:var(--fire-hist)">neighbor_fire_5km</td><td>🔥 Fire History</td><td>5km KD-Tree, Block k-1</td><td>Spatial fire contagion — nearby burning</td></tr>
+      <!-- Temporal Deltas -->
+      <tr><td>19</td><td class="mono" style="color:var(--delta)">delta_FWI_proxy</td><td>📈 Temporal Delta</td><td>Block k − k-1</td><td>Is fire weather getting worse?</td></tr>
+      <tr><td>20</td><td class="mono" style="color:var(--delta)">delta_NDVI_min</td><td>📈 Temporal Delta</td><td>Block k − k-1</td><td>Is vegetation getting drier?</td></tr>
+      <tr><td>21</td><td class="mono" style="color:var(--delta)">delta_aspect_deg</td><td>📈 Temporal Delta</td><td>Block k − k-1</td><td>~0 (terrain static)</td></tr>
+      <tr><td>22</td><td class="mono" style="color:var(--delta)">delta_elevation</td><td>📈 Temporal Delta</td><td>Block k − k-1</td><td>~0 (terrain static)</td></tr>
+      <tr><td>23</td><td class="mono" style="color:var(--delta)">delta_land_cover</td><td>📈 Temporal Delta</td><td>Block k − k-1</td><td>Land use change (deforestation?)</td></tr>
+      <tr><td>24</td><td class="mono" style="color:var(--delta)">delta_population_density</td><td>📈 Temporal Delta</td><td>Block k − k-1</td><td>Population growth near forests</td></tr>
+      <tr><td>25</td><td class="mono" style="color:var(--delta)">delta_precip_total_mm</td><td>📈 Temporal Delta</td><td>Block k − k-1</td><td>Rainfall change (−721mm for Block 4!)</td></tr>
+      <tr><td>26</td><td class="mono" style="color:var(--delta)">delta_terrain_x_veg</td><td>📈 Temporal Delta</td><td>Block k − k-1</td><td>Change in slope-vegetation coupling</td></tr>
+      <!-- Climate -->
+      <tr><td>27</td><td class="mono" style="color:var(--climate)">ONI_index</td><td>🌊 Climate Index</td><td>NOAA</td><td>El Niño–Southern Oscillation phase</td></tr>
+      <tr><td>28</td><td class="mono" style="color:var(--climate)">IOD_index</td><td>🌊 Climate Index</td><td>NOAA</td><td>Indian Ocean Dipole phase</td></tr>
+      <!-- Interactions -->
+      <tr><td>29</td><td class="mono" style="color:var(--interact)">fwi_x_ndvi</td><td>✖️ Interaction</td><td>Notebook</td><td>Fire weather × dry vegetation</td></tr>
+      <tr><td>30</td><td class="mono" style="color:var(--interact)">prev_frp_x_fwi</td><td>✖️ Interaction</td><td>Notebook</td><td>Historical fire intensity × current fire weather</td></tr>
+      <tr><td>31</td><td class="mono" style="color:var(--interact)">elev_x_ndvi</td><td>✖️ Interaction</td><td>Notebook</td><td>Altitude × vegetation dryness</td></tr>
+      <tr><td>32</td><td class="mono" style="color:var(--interact)">oni_x_precip</td><td>✖️ Interaction</td><td>Notebook</td><td>ENSO–rainfall coupling</td></tr>
+      <tr><td>33</td><td class="mono" style="color:var(--interact)">neighbor_fire_x_fwi</td><td>✖️ Interaction</td><td>Notebook</td><td>Spatial fire spread × fire weather</td></tr>
+      <!-- Seasonal -->
+      <tr><td>34</td><td class="mono" style="color:#78909c">fire_season</td><td>📅 Seasonal</td><td>Constant = 1</td><td>All samples from fire season (Jan–May)</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════ PIPELINE ═══════════════════════ -->
+<div class="section" id="pipeline">
+  <h2 class="section-title"><span class="icon">⚙️</span> Full Data Pipeline — Parameter Journey</h2>
+  <p class="section-desc">
+    Here's exactly how parameters flow from raw satellite data to model input:
+  </p>
+
+  <div class="pipeline">
+    <div class="pipe-step">
+      <div class="step-num">Step 1 — GEE Extraction</div>
+      <div class="step-title">42 columns per CSV (4 CSVs × ~10K rows)</div>
+      <div class="step-detail">
+        Google Earth Engine script extracts pixel values from 7 satellite products at each sample location.
+        Exports 4 CSVs: <code>WG_AGFE_Block1_2003_2008.csv</code> through <code>Block4_2021_2025.csv</code>.
+        Each pixel has lat/lon coordinates + 36 parameters + 6 metadata columns = <strong>42 total columns</strong>.
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="step-num">Step 2 — Load & Merge</div>
+      <div class="step-title">39,249 unified samples</div>
+      <div class="step-detail">
+        4 block CSVs are concatenated into one DataFrame with a <code>block_id</code> column [1–4].
+        Fire rate: Block 1–3 ≈ 50%, Block 4 = 46%.
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="step-num">Step 3 — Spatial Thinning</div>
+      <div class="step-title">39,249 → 29,216 samples (−25.6%)</div>
+      <div class="step-detail">
+        KD-Tree removes points within 1km of each other to eliminate spatial autocorrelation.
+        Without this, nearby pixels would leak information during cross-validation.
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="step-num">Step 4 — Column Separation</div>
+      <div class="step-title">36 parameters → 28 environmental + 8 fire (excluded)</div>
+      <div class="step-detail">
+        Remove 6 metadata columns. Separate 8 fire parameters (1 = target, 7 = excluded to prevent leakage).
+        Remaining 28 environmental features proceed to VIF screening.
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="step-num">Step 5 — VIF Screening</div>
+      <div class="step-title">28 → 14 (correlation) → 8 (VIF) environmental features</div>
+      <div class="step-detail">
+        Pass 1: Remove 14 features with |ρ| > 0.75 (keeping the one with higher target correlation).<br>
+        Pass 2: Remove 6 more with VIF > 10 iteratively.<br>
+        Result: <strong>8 independent environmental features</strong>.
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="step-num">Step 6 — Fire History Engineering</div>
+      <div class="step-title">+10 prior-block fire features</div>
+      <div class="step-detail">
+        For each block k ≥ 2, extract 7 lagged fire parameters from block k-1 at matching pixel locations.
+        Add 3 derived features: <code>fire_recurrence</code>, <code>fire_trend_delta</code>, <code>neighbor_fire_5km</code>.
+        Key finding: 63.1% of Block 4 fire pixels had fire in at least one prior block.
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="step-num">Step 7 — Temporal Deltas</div>
+      <div class="step-title">+8 change-over-time features</div>
+      <div class="step-detail">
+        For each of the 8 surviving environmental features, compute <code>value(block k) − value(block k-1)</code>.
+        Critical finding: Block 4 has <code>delta_precip_total_mm = −721mm</code> (severe drying trend!).
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="step-num">Step 8 — Climate Indices & Interactions</div>
+      <div class="step-title">+2 climate indices + 5 interactions + 1 seasonal = +8</div>
+      <div class="step-detail">
+        ONI/IOD from NOAA (block averages). 5 domain-knowledge interaction terms (e.g., FWI × NDVI, neighbor_fire × FWI).
+        Plus <code>fire_season = 1</code> constant.
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="step-num">Step 9 — Final Assembly</div>
+      <div class="step-title">34 features × 29,216 samples → Train/Test Split</div>
+      <div class="step-detail">
+        <strong>Train:</strong> Blocks 1–3 (22,321 samples) → SMOTE → 27,706 balanced samples<br>
+        <strong>Test:</strong> Block 4 (6,895 samples) — completely unseen future data<br>
+        StandardScaler applied to all 34 features. Checkpointed to disk.
+      </div>
+    </div>
+
+    <div class="pipe-step">
+      <div class="step-num">Step 10 — 5 ML Models</div>
+      <div class="step-title">RF (93.7%) | XGBoost (93.1%) | LightGBM (93.3%) | CatBoost (79.4%) | MLP (80.0%)</div>
+      <div class="step-detail">
+        Each model trained with Optuna hyperparameter tuning (15–25 trials).
+        All models receive the same 34-feature input. Best overall: <strong>Random Forest (93.68% accuracy, 0.9739 AUC)</strong>.
+      </div>
+    </div>
+  </div>
+
+  <div class="highlight-box">
+    <strong>Key Insight:</strong> The 36 raw parameters are NOT area-based or index-based in the traditional sense — they are <em>pixel-level satellite measurements</em> at each geographic coordinate. The "index" is purely spatial: each row = one 500m × 500m pixel in the Western Ghats, identified by its latitude + longitude. The temporal dimension comes from the 4 block periods (2003–2025), not from any time-series index.
+  </div>
+</div>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<div style="text-align:center;padding:60px 20px 40px;color:var(--muted);font-size:0.82rem;">
+  <p>AGFE-Fire v4 — Doc3 BIPE | Western Ghats Forest Fire Vulnerability Prediction</p>
+  <p style="margin-top:6px;">36 Parameters × 4 Temporal Blocks × 5 ML Models</p>
+  <p style="margin-top:6px;">Data Source: Google Earth Engine (MODIS, SRTM, CHIRPS, ERA5, FIRMS, GHSL)</p>
+</div>
+
+</div>
+</body>
+</html>
