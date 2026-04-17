@@ -1,34 +1,34 @@
-FWI_proxy	✖️ Interaction/Other
-NDVI_min	🌿 Vegetation
-aspect_deg	⛰️ Topography
-elevation	⛰️ Topography
-land_cover	✖️ Interaction/Other
-population_density	👥 Human/Land
-precip_total_mm	🌤️ Weather
-terrain_x_veg	✖️ Interaction/Other
-prev_fire_occurrence	🔥 Fire History
-prev_total_fire_count	🔥 Fire History
-prev_FRP_mean_MW	🔥 Fire History
-prev_FRP_max_MW	🔥 Fire History
-prev_burned_area_binary	🔥 Fire History
-prev_burn_month_count	🔥 Fire History
-prev_FIRMS_brightness_K	🔥 Fire History
-fire_recurrence	🔥 Fire History
-fire_trend_delta	🔥 Fire History
-neighbor_fire_5km	🔥 Fire History
-delta_FWI_proxy	📈 Temporal Delta
-delta_NDVI_min	📈 Temporal Delta
-delta_aspect_deg	📈 Temporal Delta
-delta_elevation	📈 Temporal Delta
-delta_land_cover	📈 Temporal Delta
-delta_population_density	📈 Temporal Delta
-delta_precip_total_mm	📈 Temporal Delta
-delta_terrain_x_veg	📈 Temporal Delta
-ONI_index	🌊 Climate Index
-IOD_index	🌊 Climate Index
-fwi_x_ndvi	🌿 Vegetation
-prev_frp_x_fwi	🔥 Fire History
-elev_x_ndvi	🌿 Vegetation
-oni_x_precip	🌤️ Weather
-neighbor_fire_x_fwi	✖️ Interaction/Other
-fire_season	✖️ Interaction/Other
+FWI_proxy	 Interaction/Other
+NDVI_min	 Vegetation
+aspect_deg	 Topography
+elevation	 Topography
+land_cover	 Interaction/Other
+population_density	 Human/Land
+precip_total_mm	 Weather
+terrain_x_veg	 Interaction/Other
+prev_fire_occurrence	 Fire History
+prev_total_fire_count	 Fire History
+prev_FRP_mean_MW	 Fire History
+prev_FRP_max_MW	 Fire History
+prev_burned_area_binary	 Fire History
+prev_burn_month_count	 Fire History
+prev_FIRMS_brightness_K	 Fire History
+fire_recurrence	 Fire History
+fire_trend_delta	 Fire History
+neighbor_fire_5km	 Fire History
+delta_FWI_proxy	 Temporal Delta
+delta_NDVI_min	 Temporal Delta
+delta_aspect_deg	 Temporal Delta
+delta_elevation	 Temporal Delta
+delta_land_cover	 Temporal Delta
+delta_population_density	 Temporal Delta
+delta_precip_total_mm	 Temporal Delta
+delta_terrain_x_veg	 Temporal Delta
+ONI_index	 Climate Index
+IOD_index	 Climate Index
+fwi_x_ndvi	 Vegetation
+prev_frp_x_fwi	 Fire History
+elev_x_ndvi	 Vegetation
+oni_x_precip	 Weather
+neighbor_fire_x_fwi	 Interaction/Other
+fire_season	 Interaction/Other
